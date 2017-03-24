@@ -1,6 +1,6 @@
 The ecrypting code starts with the Encryption Key and the Date Key.
 
-The Encryption Key will be randomly generated and stored along with the message. It should also be eaily changed for the purposes of cracking messages. With the Encryption Key, the program will somehow work through the 5 digits to generate every possible 2 digit combination in sequence. The 2 digit values will be referred to as A, B, C, and D, and will be saved in a data structure that will allow them to be easily called, added to, but also remain unmanipulated. This is important for the sake of decryption and cracking.
+The Encryption Key will be randomly generated and stored along with the message. It should also be eaily changed for the purposes of cracking messages. With the Encryption Key, the program will somehow work through the 5 digits to generate every possible 2 digit combination in sequence. The 2 digit values will be referred to as A, B, C, and D, and will be saved in a data structure that will allow them to be easily called, added to, but also remain unmanipulated. This is important for the sake of decryption and cracking. 
 
 There will be some means to generating the Date Key based on the date that the program is run. The date will be saved simply in the DDMMYY format. That number will then be squared, and the last for digits of the remainder will be stored alongside the group of 2 digit values from the Encryption Key. They will be stored as A, B, C, and D.
 
