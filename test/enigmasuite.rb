@@ -7,7 +7,8 @@ class EnigmaSuiteTest < MiniTest::Test
 
   def test_enigmasuite_creates_new_instance
     code = EnigmaSuite.new
-    assert_instance_of code, EnigmaSuite
+    assert_instance_of EnigmaSuite, code
   end
- 
+
+
 end
