@@ -1,4 +1,4 @@
-#require_relative '.rb'
+require_relative 'enigma_input.rb'
 require 'pry'
 require 'date'
 
@@ -7,9 +7,11 @@ class EnigmaSuite
     @encryption_key = generate_encryption_key
     @date_key = generate_date_key
     @key_array = @encryption_key.zip(@date_key)
+    @rotation_key = @key_array.map { |x| x.reduce(:+)}
     puts "Encryption Key: #{@encryption_key}"
     puts "Date Key: #{@date_key}"
-    puts "Key Array: #{@key_array}"
+    puts "Rotation Key: #{@rotation_key}"
+    @alphabet = ('a'..'z').to_a
   end
 
   def generate_encryption_key
