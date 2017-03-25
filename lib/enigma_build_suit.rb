@@ -1,3 +1,0 @@
-class EnigmaSuite
-
-end
