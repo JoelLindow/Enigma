@@ -14,6 +14,10 @@ class EnigmaSuite
     #binding.pry
   end
 
+  def encryptor
+
+  end
+
   def generate_encryption_key
     random_encryption = conv_num_to_five_dig(gen_random_five_digit_number)
     encryption_key_array = []
