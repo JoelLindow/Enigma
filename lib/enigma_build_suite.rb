@@ -1,4 +1,4 @@
-#require_relative '.rb'
+require_relative 'enigma_input.rb'
 require 'pry'
 require 'date'
 
