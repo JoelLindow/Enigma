@@ -10,4 +10,5 @@ class EnigmaSuiteTest < MiniTest::Test
     assert_instance_of EnigmaSuite, code
   end
 
+
 end
