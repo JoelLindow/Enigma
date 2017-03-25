@@ -6,6 +6,7 @@ class EnigmaSuite
  def initialize
    @encryption_key = generate_encryption_key
    @date_key = generate_date_key
+   
    puts @encryption_key
    puts @date_key
  end
