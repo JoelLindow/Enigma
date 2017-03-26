@@ -19,7 +19,11 @@ class EnigmaSuite
     encrypted_array = []
     chunked_string.each do |four_letter_chunk|
       four_letter_chunk.each_with_index do |letter, i|
-        encrypted_array << rotate(find_letter_index(letter), @rotation_key[i])
+        if letter == " "
+          encrypted_array << letter
+        else
+          encrypted_array << rotate(find_letter_index(letter), @rotation_key[i])
+        end
       end
     end
     encrypted_array.join
@@ -30,7 +34,11 @@ class EnigmaSuite
     decrypted_array = []
     chunked_string.each do |four_letter_chunk|
       four_letter_chunk.each_with_index do |letter, i|
-        decrypted_array << rotate(find_letter_index(letter), (@rotation_key[i] *-1))
+        if letter == " "
+          decrypted_array << letter
+        else
+          decrypted_array << rotate(find_letter_index(letter), (@rotation_key[i] *-1))
+        end
       end
     end
     decrypted_array.join
@@ -40,7 +48,7 @@ class EnigmaSuite
 
   end
 
-  def generate_encryption_key
+  def generate_encryption_key()
     random_encryption = conv_num_to_five_dig(gen_random_five_digit_number)
     encryption_key_array = []
     4.times { |i| encryption_key_array << random_encryption.slice(i,2).to_i }
@@ -83,7 +91,7 @@ end
 
 crack = EnigmaSuite.new
 
-#binding.pry
+binding.pry
 
 
 

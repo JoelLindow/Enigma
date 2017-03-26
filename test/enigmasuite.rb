@@ -77,6 +77,12 @@ class EnigmaSuiteTest < MiniTest::Test
   def test_encryption_handles_spaces
     code = EnigmaSuite.new
     @rotation_key = [15, 19, 8, 4]
-    assert_equal 'uber abvhdp', code.encrypt('uber lindow')
+    assert_equal 'jumv eqrshe', code.encrypt('uber lindow')
+  end
+
+  def test_decryptor_handles_spaces
+    code = EnigmaSuite.new
+    @rotation_key = [15, 19, 8, 4]
+    assert_equal 'uber lindow', code.decrypt('jumv eqrshe')
   end
 end
