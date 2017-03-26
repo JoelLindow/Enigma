@@ -39,4 +39,44 @@ class EnigmaSuiteTest < MiniTest::Test
     assert code.rotation_key.all? { |x| x.class == Fixnum }
   end
 
+  def test_find_letter_index_returns_correct_index
+    code = EnigmaSuite.new
+    assert_equal 12, code.find_letter_index('m')
+  end
+
+  def test_find_letter_index_handles_uppercase
+    code = EnigmaSuite.new
+    assert_equal 3, code.find_letter_index('D')
+  end
+
+  def test_rotate_returns_correct_letter
+    code = EnigmaSuite.new
+    assert_equal 'j', code.rotate(code.find_letter_index('u'), 15)
+  end
+
+  def test_split_four_letter_arrays
+    code = EnigmaSuite.new
+    two_chunks = [["b", "r", "e", "a"], ["k", " ", "i", "t"]]
+    assert_equal two_chunks, code.split_to_four_letter_arrays('break it')
+  end
+
+  def test_encryption_works
+    #skip
+    code = EnigmaSuite.new
+    @rotation_key = [15, 19, 8, 4]
+    assert_equal 'jumv', code.encrypt('uber')
+  end
+
+  def test_encryption_works
+    #skip
+    code = EnigmaSuite.new
+    @rotation_key = [15, 19, 8, 4]
+    assert_equal 'uber', code.decrypt('jumv')
+  end
+
+  def test_encryption_handles_spaces
+    code = EnigmaSuite.new
+    @rotation_key = [15, 19, 8, 4]
+    assert_equal 'uber abvhdp', code.encrypt('uber lindow')
+  end
 end
