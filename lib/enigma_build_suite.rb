@@ -8,8 +8,7 @@ class EnigmaSuite
   def initialize
     @encryption_key = generate_encryption_key
     @date_key = generate_date_key
-    @key_array = @encryption_key.zip(@date_key)
-    @rotation_key = [15, 19, 8, 4]#@key_array.map { |x| x.reduce(:+)}
+    @rotation_key = [15, 19, 8, 4]#combine(zip_two_arrays(@encryption_key, @date_key))
     @alphabet = ('a'..'z').to_a
     #binding.pry
   end
@@ -29,7 +28,7 @@ class EnigmaSuite
     encrypted_array.join
   end
 
-  def decrypt(string)
+  def decrypt(string, rotation_key = @rotation_key)
     chunked_string = split_to_four_letter_arrays(string)
     decrypted_array = []
     chunked_string.each do |four_letter_chunk|
@@ -37,24 +36,38 @@ class EnigmaSuite
         if letter == " "
           decrypted_array << letter
         else
-          decrypted_array << rotate(find_letter_index(letter), (@rotation_key[i] *-1))
+          decrypted_array << rotate(find_letter_index(letter), (rotation_key[i] *-1))
         end
       end
     end
     decrypted_array.join
   end
 
-  def crack(string, generate_date_key)
+  # def crack(string, day = 0)
+  #   encryption_key = '00000'
+  #   encrypted_array = breaks_five_digit_string_to_array_of_four(encryption_key)
+  #   date_key = generate_date_key(day)
+  #   rotation_key = combine(zip_two_arrays(encrypted_array, date_key))
+  #   loop do
+  #
+  #     break if string.slice(-7, 7) == "..end.."
+  #   end
+  #
+  #   #binding.pry
+  #
+  # end
 
-  end
-
-  def generate_encryption_key()
+  def generate_encryption_key
     random_encryption = conv_num_to_five_dig(gen_random_five_digit_number)
-    encryption_key_array = []
-    4.times { |i| encryption_key_array << random_encryption.slice(i,2).to_i }
-    encryption_key_array
-    #binding.pry
+    breaks_five_digit_string_to_array_of_four(random_encryption)
   end
+
+  def breaks_five_digit_string_to_array_of_four(number)
+    encryption_key_array = []
+    4.times { |i| encryption_key_array << number.slice(i,2).to_i }
+    encryption_key_array
+  end
+
 
   def generate_date_key(days = 0)
     date = (Date.today - days).strftime("%d%m%y")
@@ -86,12 +99,20 @@ class EnigmaSuite
   def split_to_four_letter_arrays(string)
     string.chars.each_slice(4).to_a
   end
+
+  def zip_two_arrays(array1, array2)
+    array1.zip(array2)
+  end
+
+  def combine(nested_arrays)
+    nested_arrays.map { |x| x.reduce(:+)}
+  end
 end
 
 
 crack = EnigmaSuite.new
-
-binding.pry
+#crack.crack('jumv eqrshe', 1005)
+#binding.pry
 
 
 

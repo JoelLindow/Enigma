@@ -85,4 +85,10 @@ class EnigmaSuiteTest < MiniTest::Test
     @rotation_key = [15, 19, 8, 4]
     assert_equal 'uber lindow', code.decrypt('jumv eqrshe')
   end
+
+  def test_crack_can_crack_all_zeroes_encryption_key
+    skip
+    code = EnigmaSuite.new
+    assert_equal 'uber lindow', code.crack('jumv eqrshe')
+  end
 end
