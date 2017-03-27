@@ -61,28 +61,22 @@ class EnigmaSuiteTest < MiniTest::Test
   end
 
   def test_encryption_works
-    #skip
-    code = EnigmaSuite.new
-    @rotation_key = [15, 19, 8, 4]
+    code = EnigmaSuite.new([15, 19, 8, 4])
     assert_equal 'jumv', code.encrypt('uber')
   end
 
   def test_encryption_works
-    #skip
-    code = EnigmaSuite.new
-    @rotation_key = [15, 19, 8, 4]
+    code = EnigmaSuite.new([15, 19, 8, 4])
     assert_equal 'uber', code.decrypt('jumv')
   end
 
   def test_encryption_handles_spaces
-    code = EnigmaSuite.new
-    @rotation_key = [15, 19, 8, 4]
+    code = EnigmaSuite.new([15, 19, 8, 4])
     assert_equal 'jumv eqrshe', code.encrypt('uber lindow')
   end
 
   def test_decryptor_handles_spaces
-    code = EnigmaSuite.new
-    @rotation_key = [15, 19, 8, 4]
+    code = EnigmaSuite.new([15, 19, 8, 4])
     assert_equal 'uber lindow', code.decrypt('jumv eqrshe')
   end
 

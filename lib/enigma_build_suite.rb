@@ -5,23 +5,23 @@ require 'date'
 class EnigmaSuite
   attr_reader :encryption_key, :key_array, :rotation_key, :date_key
 
-  def initialize
+
+  def initialize(rotation_key = nil)
     @encryption_key = generate_encryption_key
     @date_key = generate_date_key
-    @rotation_key = [15, 19, 8, 4]#combine(zip_two_arrays(@encryption_key, @date_key))
+    @rotation_key = rotation_key || combine(zip_two_arrays(@encryption_key, @date_key))
     @alphabet = ('a'..'z').to_a
     #binding.pry
   end
 
   def encrypt(string)
     chunked_string = split_to_four_letter_arrays(string)
-    encrypted_array = []
-    chunked_string.each do |four_letter_chunk|
-      four_letter_chunk.each_with_index do |letter, i|
+    encrypted_array = chunked_string.map do |four_letter_chunk|
+      four_letter_chunk.map.with_index(0) do |letter, i|
         if letter == " "
-          encrypted_array << letter
+          letter
         else
-          encrypted_array << rotate(find_letter_index(letter), @rotation_key[i])
+          rotate(find_letter_index(letter), @rotation_key[i])
         end
       end
     end
@@ -30,13 +30,12 @@ class EnigmaSuite
 
   def decrypt(string, rotation_key = @rotation_key)
     chunked_string = split_to_four_letter_arrays(string)
-    decrypted_array = []
-    chunked_string.each do |four_letter_chunk|
-      four_letter_chunk.each_with_index do |letter, i|
+    decrypted_array = chunked_string.map do |four_letter_chunk|
+      four_letter_chunk.map.with_index(0) do |letter, i|
         if letter == " "
-          decrypted_array << letter
+          letter
         else
-          decrypted_array << rotate(find_letter_index(letter), (rotation_key[i] *-1))
+          rotate(find_letter_index(letter), (rotation_key[i] *-1))
         end
       end
     end
@@ -89,6 +88,7 @@ class EnigmaSuite
   end
 
   def rotate(letter_index, rotation)
+    #binding.pry
     @alphabet.rotate(rotation)[letter_index]
   end
 
@@ -113,7 +113,3 @@ end
 crack = EnigmaSuite.new
 #crack.crack('jumv eqrshe', 1005)
 #binding.pry
-
-
-
-#Rotation alph.rotate(rotation_key)[index]
