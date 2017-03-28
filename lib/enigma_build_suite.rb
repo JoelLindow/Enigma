@@ -10,12 +10,12 @@ class EnigmaSuite
     @encryption_key = generate_encryption_key
     @date_key = generate_date_key
     @rotation_key = rotation_key || combine(zip_two_arrays(@encryption_key, @date_key))
-    @alphabet = ('a'..'z').to_a
+    @alphabet = (','..'z').to_a
     #binding.pry
   end
 
-  def encrypt(string)
-    chunked_string = split_to_four_letter_arrays(string)
+  def encrypt(message)
+    chunked_string = split_to_four_letter_arrays(message)
     encrypted_array = chunked_string.map do |four_letter_chunk|
       four_letter_chunk.map.with_index(0) do |letter, i|
         if letter == " "
@@ -26,10 +26,11 @@ class EnigmaSuite
       end
     end
     encrypted_array.join
+    # binding.pry
   end
 
-  def decrypt(string, rotation_key = @rotation_key)
-    chunked_string = split_to_four_letter_arrays(string)
+  def decrypt(message, rotation_key = @rotation_key)
+    chunked_string = split_to_four_letter_arrays(message)
     decrypted_array = chunked_string.map do |four_letter_chunk|
       four_letter_chunk.map.with_index(0) do |letter, i|
         if letter == " "
@@ -42,19 +43,25 @@ class EnigmaSuite
     decrypted_array.join
   end
 
-  # def crack(string, day = 0)
-  #   encryption_key = '00000'
-  #   encrypted_array = breaks_five_digit_string_to_array_of_four(encryption_key)
-  #   date_key = generate_date_key(day)
-  #   rotation_key = combine(zip_two_arrays(encrypted_array, date_key))
-  #   loop do
-  #
-  #     break if string.slice(-7, 7) == "..end.."
-  #   end
-  #
-  #   #binding.pry
-  #
-  # end
+  def crack(message, day = 0)
+    encryption_key = '00000'
+    date_key = generate_date_key(day)
+    loop do
+      encrypted_array = breaks_five_digit_string_to_array_of_four(encryption_key)
+      rotation_key = combine(zip_two_arrays(encrypted_array, date_key))
+
+      decrypted_attempt = decrypt(message, rotation_key)
+      if decrypted_attempt.slice(-2, 2) == "ow"
+        return decrypted_attempt
+        break
+      end
+
+      #binding.pry
+
+      encryption_key_new = encryption_key.to_i + 1
+      encryption_key_to_s = conv_num_to_five_dig(encryption_key_new)
+    end
+  end
 
   def generate_encryption_key
     random_encryption = conv_num_to_five_dig(gen_random_five_digit_number)
@@ -93,7 +100,7 @@ class EnigmaSuite
   end
 
   def find_letter_index(letter)
-    @alphabet.index(letter.downcase)
+    @alphabet.index(letter)
   end
 
   def split_to_four_letter_arrays(string)
@@ -110,6 +117,10 @@ class EnigmaSuite
 end
 
 
-crack = EnigmaSuite.new
+banana = EnigmaSuite.new([0, 4, 8, 9])
 #crack.crack('jumv eqrshe', 1005)
+# ""
+# banana.encrypt('uber lindow')
+banana.crack('ufm, pqwds0')
 #binding.pry
+""

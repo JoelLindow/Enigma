@@ -41,17 +41,17 @@ class EnigmaSuiteTest < MiniTest::Test
 
   def test_find_letter_index_returns_correct_index
     code = EnigmaSuite.new
-    assert_equal 12, code.find_letter_index('m')
+    assert_equal 65, code.find_letter_index('m')
   end
 
   def test_find_letter_index_handles_uppercase
     code = EnigmaSuite.new
-    assert_equal 3, code.find_letter_index('D')
+    assert_equal 24, code.find_letter_index('D')
   end
 
   def test_rotate_returns_correct_letter
     code = EnigmaSuite.new
-    assert_equal 'j', code.rotate(code.find_letter_index('u'), 15)
+    assert_equal '5', code.rotate(code.find_letter_index('u'), 15)
   end
 
   def test_split_four_letter_arrays
@@ -62,27 +62,26 @@ class EnigmaSuiteTest < MiniTest::Test
 
   def test_encryption_works
     code = EnigmaSuite.new([15, 19, 8, 4])
-    assert_equal 'jumv', code.encrypt('uber')
+    assert_equal '5umv', code.encrypt('uber')
   end
 
-  def test_encryption_works
+  def test_decryption_works
     code = EnigmaSuite.new([15, 19, 8, 4])
-    assert_equal 'uber', code.decrypt('jumv')
+    assert_equal 'uber', code.decrypt('5umv')
   end
 
   def test_encryption_handles_spaces
     code = EnigmaSuite.new([15, 19, 8, 4])
-    assert_equal 'jumv eqrshe', code.encrypt('uber lindow')
+    assert_equal '5umv 0qrs30', code.encrypt('uber lindow')
   end
 
   def test_decryptor_handles_spaces
     code = EnigmaSuite.new([15, 19, 8, 4])
-    assert_equal 'uber lindow', code.decrypt('jumv eqrshe')
+    assert_equal 'uber lindow', code.decrypt('5umv 0qrs30')
   end
 
   def test_crack_can_crack_all_zeroes_encryption_key
-    skip
     code = EnigmaSuite.new
-    assert_equal 'uber lindow', code.crack('jumv eqrshe')
+    assert_equal 'uber lindow', code.crack('ufm, pqwds0')
   end
 end
