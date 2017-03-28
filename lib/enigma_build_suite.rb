@@ -10,7 +10,7 @@ class EnigmaSuite
     @encryption_key = generate_encryption_key
     @date_key = generate_date_key
     @rotation_key = rotation_key || combine(zip_two_arrays(@encryption_key, @date_key))
-    @alphabet = (','..'z').to_a
+    @alphabet = character_map
     #binding.pry
   end
 
@@ -18,11 +18,7 @@ class EnigmaSuite
     chunked_string = split_to_four_letter_arrays(message)
     encrypted_array = chunked_string.map do |four_letter_chunk|
       four_letter_chunk.map.with_index(0) do |letter, i|
-        if letter == " "
-          letter
-        else
           rotate(find_letter_index(letter), @rotation_key[i])
-        end
       end
     end
     encrypted_array.join
@@ -33,11 +29,7 @@ class EnigmaSuite
     chunked_string = split_to_four_letter_arrays(message)
     decrypted_array = chunked_string.map do |four_letter_chunk|
       four_letter_chunk.map.with_index(0) do |letter, i|
-        if letter == " "
-          letter
-        else
           rotate(find_letter_index(letter), (rotation_key[i] *-1))
-        end
       end
     end
     decrypted_array.join
@@ -51,15 +43,16 @@ class EnigmaSuite
       rotation_key = combine(zip_two_arrays(encrypted_array, date_key))
 
       decrypted_attempt = decrypt(message, rotation_key)
-      if decrypted_attempt.slice(-2, 2) == "ow"
+      if decrypted_attempt.slice(-7, 7) == "..end.."
         return decrypted_attempt
         break
+      elsif encryption_key.to_i > 100000
+        break
       end
-
-      #binding.pry
-
       encryption_key_new = encryption_key.to_i + 1
-      encryption_key_to_s = conv_num_to_five_dig(encryption_key_new)
+      encryption_key = conv_num_to_five_dig(encryption_key_new)
+      #binding.pry
+      decrypted_attempt
     end
   end
 
@@ -114,13 +107,27 @@ class EnigmaSuite
   def combine(nested_arrays)
     nested_arrays.map { |x| x.reduce(:+)}
   end
+
+  def character_map
+    encryption_alphabet = (','..'z').to_a
+    encryption_alphabet.delete_at(48)
+    encryption_alphabet.delete("/")
+    encryption_alphabet.push('"')
+    encryption_alphabet.push(' ')
+    encryption_alphabet
+  end
+
 end
 
 
-banana = EnigmaSuite.new([0, 4, 8, 9])
+
+banana = EnigmaSuite.new#([0, 3, 8, 4])
 #crack.crack('jumv eqrshe', 1005)
 # ""
-# banana.encrypt('uber lindow')
-banana.crack('ufm, pqwds0')
+puts banana.encrypt('whatever I want I want you son of a bitch ..end..')
+#puts banana.encrypt('uber lindow')
+#puts banana.crack('[@9 cJ=xJMK6f^9xJ^S')
+#puts banana.decrypt('wli-ezm" M 1ar, I iuwe2, -mul 4kixkq?0 8.ivm.3')
+
 #binding.pry
 ""
