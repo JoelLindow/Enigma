@@ -72,27 +72,25 @@ class EnigmaTest < MiniTest::Test
   end
 
   def test_encryption_handles_spaces
-    skip
-    code = EnigmaSuite.new([15, 19, 8, 4])
+    code = Enigma.new([15, 19, 8, 4])
     assert_equal '4umv;.qrs2.', code.encrypt('uber lindow')
   end
 
   def test_decryptor_handles_spaces
-    skip
-    code = EnigmaSuite.new([15, 19, 8, 4])
+    code = Enigma.new([15, 19, 8, 4])
     assert_equal 'uber lindow', code.decrypt('4umv;.qrs2.')
   end
 
   def test_crack_can_crack_all_zeroes_encryption_key
     skip
-    code = EnigmaSuite.new
-    assert_equal 'uber lindow ..end..', code.crack('[@9 cJ=xJMK6f^9xJ^S')
+    code = Enigma.new
+    assert_equal 'uber lindow ..end..', code.crack('ubes liodow,..eod..')
   end
 
   def test_crack_can_crack_higher_rotation_key
     skip
-    code = EnigmaSuite.new
-    message = 'whatever I want I want you son of a bitch ..end..'
-    assert_equal message, code.crack('iST>VbX<n5pARYhF;hk"``pCaap=aYp9WhTFSTh,YhsIVYWIq')
+    code = Enigma.new
+    message = 'much less offensive test string ..end..'
+    assert_equal message, code.crack('muhk ljvs tifesvivj.texw syuinl...jqd.4')
   end
 end

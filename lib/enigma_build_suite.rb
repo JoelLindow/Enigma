@@ -41,6 +41,7 @@ class EnigmaSuite
 
       decrypted_attempt = decrypt(message, rotation_key)
       if decrypted_attempt.slice(-7, 7) == "..end.."
+        puts decrypted_attempt
         return decrypted_attempt
         break
       elsif encryption_key.to_i > 100000
@@ -112,3 +113,7 @@ class EnigmaSuite
     encryption_alphabet
   end
 end
+spy = EnigmaSuite.new([2, 8, 24, 36])
+
+# puts spy.encrypt('horses fart more than cows. but, cows stink worse than horses ..end..')
+puts spy.decrypt('jw:Gg"D:cz<Pow:9- 05p4"Cy"GPd,<Q-k7Ku4;Hkv3Pyw:Gg4<<cvD<qz;9u4GSgv S1')

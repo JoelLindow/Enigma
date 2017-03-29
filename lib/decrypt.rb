@@ -1,12 +1,22 @@
+require './lib/enigma.rb'
+require 'date'
 
-class Decrypt
-  def decrypt(message, rotation_key = @rotation_key)
-    chunked_string = split_to_four_letter_arrays(message)
-    decrypted_array = chunked_string.map do |four_letter_chunk|
-      four_letter_chunk.map.with_index(0) do |letter, i|
-        rotate(find_letter_index(letter), (rotation_key[i] *-1))
-      end
-    end
-    decrypted_array.join
-  end
+
+
+message_to_decrypt = File.read(ARGV[0]).chomp
+command_line_rotation_key = ARGV[2].chomp
+command_line_date_key = ARGV[3].chomp
+decryptor = Enigma.new
+
+encryption_key = decryptor.five_dig_rand_enc_to_array(command_line_rotation_key)
+date_key = decryptor.generate_date_key(command_line_date_key)
+rotation_key = decryptor.combine(decryptor.zip_two_arrays(encryption_key, date_key))
+decrypted_message = decryptor.decrypt(message_to_decrypt, rotation_key)
+
+
+
+File.open(ARGV[1], 'w') do |f|
+  f.puts decrypted_message
 end
+#
+# puts "Created #{ARGV[1]} with the key #{decryptor.rotation_key.join} and date #{Date.today.strftime("%d%m%y")}"

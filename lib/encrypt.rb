@@ -1,18 +1,14 @@
+require './lib/enigma.rb'
+require 'date'
 
-class Encrypt
+message_to_encrypt = File.read(ARGV[0]).chomp
+encryptor = Enigma.new
+encrypted_message = encryptor.encrypt(message_to_encrypt)
+key = encryptor.encryption_key
 
-  def initialize(message)
-    @message = message
-    encrypt(@message)
-  end
-
-  def encrypt(message)
-    chunked_string = split_to_four_letter_arrays(message)
-    encrypted_array = chunked_string.map do |four_letter_chunk|
-      four_letter_chunk.map.with_index(0) do |letter, i|
-        rotate(find_letter_index(letter), @rotation_key[i])
-      end
-    end
-    encrypted_array.join
-  end
+File.open(ARGV[1], 'w') do |f|
+  f.puts encrypted_message
 end
+
+
+puts "Created #{ARGV[1]} with the key #{encryptor.random_encryption} and date #{Date.today.strftime("%d%m%y")}"
