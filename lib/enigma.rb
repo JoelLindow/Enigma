@@ -34,35 +34,35 @@ class Enigma
     decrypted_array.join
   end
 
-  def crack(message, day = 0)
+  def crack(message)#, date = generate_date_key)
     encryption_key = '00000'
-    date_key = generate_date_key(day)
+    date_key = generate_date_key#(day)
     loop do
       encrypted_array = breaks_five_digit_string_to_array_of_four(encryption_key)
+       #binding.pry
       rotation_key = combine(zip_two_arrays(encrypted_array, date_key))
 
       decrypted_attempt = decrypt(message, rotation_key)
+      puts decrypted_attempt
       if decrypted_attempt.slice(-7, 7) == "..end.."
-        puts decrypted_attempt
+       # decrypted_attempt
+        # puts "Getting there"
+        # binding.pry
         return decrypted_attempt
         break
       elsif encryption_key.to_i > 100000
+        puts "Gettin There ELSIF"
         break
       end
       encryption_key_new = encryption_key.to_i + 1
       encryption_key = conv_num_to_five_dig(encryption_key_new)
       decrypted_attempt
+      #binding.pry
     end
   end
 
-  # def generate_random_five_digit_for_encryption
-  #   random_encryption = conv_num_to_five_dig(gen_random_five_digit_number)
-  #   breaks_five_digit_string_to_array_of_four(random_encryption)
-  # end
-
   def generate_random_five_digit_for_encryption
     conv_num_to_five_dig(gen_random_five_digit_number)
-    # breaks_five_digit_string_to_array_of_four(random_encryption)
   end
 
   def five_dig_rand_enc_to_array(random_encryption)
@@ -77,7 +77,6 @@ class Enigma
   end
 
   def generate_date_key(date = generate_date)
-    #date = (Date.today - days).strftime("%d%m%y")
     date_squared = date.to_i**2
     isolate_last_four_digits(date_squared)
   end
@@ -129,8 +128,8 @@ class Enigma
   end
 end
 
-spy = Enigma.new([0, 0, 0, 1])
+spy = Enigma.new#([0, 0, 0, 1])
 #spy.decrypt("bananafart")
-puts spy.encrypt('uber lindow ..end..')
-#binding.pry
-""
+#puts spy.encrypt('much less offensive test string ..end..')
+# binding.pry
+spy.crack('Bw_gI1cc14qqLD_c1Dy')

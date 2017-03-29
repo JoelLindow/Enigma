@@ -66,7 +66,6 @@ class EnigmaTest < MiniTest::Test
   end
 
   def test_decryption_works
-    skip
     code = Enigma.new([15, 19, 8, 4])
     assert_equal 'uber', code.decrypt('4umv')
   end
@@ -82,15 +81,13 @@ class EnigmaTest < MiniTest::Test
   end
 
   def test_crack_can_crack_all_zeroes_encryption_key
-    skip
     code = Enigma.new
-    assert_equal 'uber lindow ..end..', code.crack('ubes liodow,..eod..')
+    assert_equal 'uber lindow ..end..', code.crack('Bw_gI1cc14qqLD_c1Dy')
   end
 
   def test_crack_can_crack_higher_rotation_key
-    skip
     code = Enigma.new
     message = 'much less offensive test string ..end..'
-    assert_equal message, code.crack('muhk ljvs tifesvivj.texw syuinl...jqd.4')
+    assert_equal message, code.crack('0;k-?2m96Bw y"v9 <mB7"":?9 8 4oBBEm4wE7')
   end
 end
