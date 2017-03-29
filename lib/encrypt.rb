@@ -7,7 +7,7 @@ encrypted_message = encryptor.encrypt(message_to_encrypt)
 key = encryptor.encryption_key
 
 File.open(ARGV[1], 'w') do |f|
-  f.puts encrypted_message
+ f.puts encrypted_message
 end
 
 

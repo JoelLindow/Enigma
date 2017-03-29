@@ -34,16 +34,16 @@ class Enigma
     decrypted_array.join
   end
 
-  def crack(message)#, date = generate_date_key)
+  def crack(message, date = nil)#, date = generate_date_key)
     encryption_key = '00000'
-    date_key = generate_date_key#(day)
+    date_key = generate_date_key(date) || generate_date_key#(day)
     loop do
       encrypted_array = breaks_five_digit_string_to_array_of_four(encryption_key)
        #binding.pry
       rotation_key = combine(zip_two_arrays(encrypted_array, date_key))
 
       decrypted_attempt = decrypt(message, rotation_key)
-      puts decrypted_attempt
+      decrypted_attempt
       if decrypted_attempt.slice(-7, 7) == "..end.."
        # decrypted_attempt
         # puts "Getting there"
@@ -51,7 +51,6 @@ class Enigma
         return decrypted_attempt
         break
       elsif encryption_key.to_i > 100000
-        puts "Gettin There ELSIF"
         break
       end
       encryption_key_new = encryption_key.to_i + 1
@@ -128,8 +127,8 @@ class Enigma
   end
 end
 
-spy = Enigma.new#([0, 0, 0, 1])
+#spy = Enigma.new#([0, 0, 0, 1])
 #spy.decrypt("bananafart")
 #puts spy.encrypt('much less offensive test string ..end..')
 # binding.pry
-spy.crack('Bw_gI1cc14qqLD_c1Dy')
+# spy.crack('Bw_gI1cc14qqLD_c1Dy')
