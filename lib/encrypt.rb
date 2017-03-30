@@ -10,5 +10,4 @@ File.open(ARGV[1], 'w') do |f|
  f.puts encrypted_message
 end
 
-
 puts "Created #{ARGV[1]} with the key #{encryptor.random_encryption} and date #{Date.today.strftime("%d%m%y")}"

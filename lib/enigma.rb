@@ -1,9 +1,13 @@
-require_relative 'enigma_input.rb'
 require 'pry'
 require 'date'
 
 class Enigma
-  attr_reader :encryption_key, :key_array, :rotation_key, :date_key, :random_encryption
+  attr_reader :encryption_key,
+              :key_array,
+              :rotation_key,
+              :date_key,
+              :random_encryption,
+              :cracked_key
 
   def initialize(rotation_key = nil)
     @random_encryption = generate_random_five_digit_for_encryption
@@ -11,15 +15,15 @@ class Enigma
     @date_key = generate_date_key
     @rotation_key = rotation_key || combine(zip_two_arrays(@encryption_key, @date_key))
     @alphabet = character_map
+    @cracked_key = nil
   end
 
   def encrypt(message)
-    message_clean = message.gsub("\n", '')
+    message_clean = message.gsub("\n", '  ')
     chunked_string = split_to_four_letter_arrays(message_clean)
     encrypted_array = chunked_string.map do |four_letter_chunk|
       four_letter_chunk.map.with_index(0) do |letter, i|
         if find_letter_index(letter) == nil
-          binding.pry
         else
           rotate(find_letter_index(letter), @rotation_key[i])
         end
@@ -29,25 +33,26 @@ class Enigma
   end
 
   def decrypt(message, rotation_key = @rotation_key)
-    message_clean = message.gsub("\n", ' ')
+    message_clean = message.gsub("\n", '  ')
     chunked_string = split_to_four_letter_arrays(message_clean = message)
     decrypted_array = chunked_string.map do |four_letter_chunk|
       four_letter_chunk.map.with_index(0) do |letter, i|
-          rotate(find_letter_index(letter), (rotation_key[i] *-1))
+        rotate(find_letter_index(letter), (rotation_key[i] *-1))
       end
     end
     decrypted_array.join
   end
 
-  def crack(message, date = nil)#, date = generate_date_key)
+  def crack(message, date = nil)
     encryption_key = '00000'
-    date_key = generate_date_key(date) || generate_date_key#(day)
+    date_key = generate_date_key(date) || generate_date_key
     loop do
       encrypted_array = breaks_five_digit_string_to_array_of_four(encryption_key)
       rotation_key = combine(zip_two_arrays(encrypted_array, date_key))
       decrypted_attempt = decrypt(message, rotation_key)
       decrypted_attempt
       if decrypted_attempt.slice(-7, 7) == "..end.."
+        @cracked_key = encryption_key
         return decrypted_attempt
         break
       elsif encryption_key.to_i > 100000
@@ -65,7 +70,6 @@ class Enigma
 
   def five_dig_rand_enc_to_array(random_encryption)
     breaks_five_digit_string_to_array_of_four(random_encryption)
-
   end
 
   def breaks_five_digit_string_to_array_of_four(number)
@@ -75,8 +79,12 @@ class Enigma
   end
 
   def generate_date_key(date = generate_date)
-    date_squared = date.to_i**2
-    isolate_last_four_digits(date_squared)
+    if date == nil
+      return nil
+    else
+      date_squared = date.to_i**2
+      isolate_last_four_digits(date_squared)
+    end
   end
 
   def generate_date(days = 0)
@@ -122,12 +130,8 @@ class Enigma
     encryption_alphabet.delete("/")
     encryption_alphabet.push('"')
     encryption_alphabet.push(' ')
+    encryption_alphabet.push('?')
+    encryption_alphabet.push('!')
     encryption_alphabet
   end
 end
-
-#spy = Enigma.new#([0, 0, 0, 1])
-#spy.decrypt("bananafart")
-#puts spy.encrypt('much less offensive test string ..end..')
-# binding.pry
-# spy.crack('Bw_gI1cc14qqLD_c1Dy')

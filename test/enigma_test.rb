@@ -51,7 +51,7 @@ class EnigmaTest < MiniTest::Test
 
   def test_rotate_returns_correct_letter
     code = Enigma.new
-    assert_equal '4', code.rotate(code.find_letter_index('u'), 15)
+    assert_equal '2', code.rotate(code.find_letter_index('u'), 15)
   end
 
   def test_split_four_letter_arrays
@@ -62,32 +62,32 @@ class EnigmaTest < MiniTest::Test
 
   def test_encryption_works
     code = Enigma.new([15, 19, 8, 4])
-    assert_equal '4umv', code.encrypt('uber')
+    assert_equal '2umv', code.encrypt('uber')
   end
 
   def test_decryption_works
     code = Enigma.new([15, 19, 8, 4])
-    assert_equal 'uber', code.decrypt('4umv')
+    assert_equal 'uber', code.decrypt('2umv')
   end
 
   def test_encryption_handles_spaces
     code = Enigma.new([15, 19, 8, 4])
-    assert_equal '4umv;.qrs2.', code.encrypt('uber lindow')
+    assert_equal '2umv9,qrs0,', code.encrypt('uber lindow')
   end
 
   def test_decryptor_handles_spaces
     code = Enigma.new([15, 19, 8, 4])
-    assert_equal 'uber lindow', code.decrypt('4umv;.qrs2.')
+    assert_equal 'uber lindow', code.decrypt('2umv9,qrs0,')
   end
 
   def test_crack_can_crack_all_zeroes_encryption_key
     code = Enigma.new
-    assert_equal 'uber lindow ..end..', code.crack('Bw_gI1cc14qqLD_c1Dy')
+    assert_equal 'uber lindow ..end..', code.crack('n<oEuFsA]I.Oz[oA][9')
   end
 
-  def test_crack_can_crack_higher_rotation_key
+  def test_crack_can_longer_string
     code = Enigma.new
-    message = 'much less offensive test string ..end..'
-    assert_equal message, code.crack('0;k-?2m96Bw y"v9 <mB7"":?9 8 4oBBEm4wE7')
+    message = "Sometimes you just have to throw the kitchen sink at it too ..end.."
+    assert_equal message, code.crack('9T6wYN6wXbB.Zb35XYEzF[-<YTE4MW87bY1wbP24HM--bX2-Pb 4bN=<YT8<gg--IgJ')
   end
 end
