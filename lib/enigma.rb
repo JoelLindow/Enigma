@@ -19,7 +19,7 @@ class Enigma
   end
 
   def encrypt(message)
-    message_clean = message.gsub("\n", '  ')
+    message_clean = message.delete("\n")
     chunked_string = split_to_four_letter_arrays(message_clean)
     encrypted_array = chunked_string.map do |four_letter_chunk|
       four_letter_chunk.map.with_index(0) do |letter, i|
@@ -33,7 +33,7 @@ class Enigma
   end
 
   def decrypt(message, rotation_key = @rotation_key)
-    message_clean = message.gsub("\n", '  ')
+    message_clean = message.delete("\n")
     chunked_string = split_to_four_letter_arrays(message_clean = message)
     decrypted_array = chunked_string.map do |four_letter_chunk|
       four_letter_chunk.map.with_index(0) do |letter, i|
