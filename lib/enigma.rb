@@ -16,6 +16,7 @@ class Enigma
     @rotation_key = rotation_key || combine(zip_two_arrays(@encryption_key, @date_key))
     @alphabet = character_map
     @cracked_key = nil
+    #binding.pry
   end
 
   def encrypt(message)
@@ -135,3 +136,6 @@ class Enigma
     encryption_alphabet
   end
 end
+
+spy = Enigma.new
+#binding.pry
