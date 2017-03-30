@@ -14,18 +14,23 @@ class Enigma
   end
 
   def encrypt(message)
-    chunked_string = split_to_four_letter_arrays(message)
+    message_clean = message.gsub("\n", '')
+    chunked_string = split_to_four_letter_arrays(message_clean)
     encrypted_array = chunked_string.map do |four_letter_chunk|
       four_letter_chunk.map.with_index(0) do |letter, i|
+        if find_letter_index(letter) == nil
+          binding.pry
+        else
           rotate(find_letter_index(letter), @rotation_key[i])
+        end
       end
     end
     encrypted_array.join
   end
 
   def decrypt(message, rotation_key = @rotation_key)
-    #binding.pry
-    chunked_string = split_to_four_letter_arrays(message)
+    message_clean = message.gsub("\n", ' ')
+    chunked_string = split_to_four_letter_arrays(message_clean = message)
     decrypted_array = chunked_string.map do |four_letter_chunk|
       four_letter_chunk.map.with_index(0) do |letter, i|
           rotate(find_letter_index(letter), (rotation_key[i] *-1))
@@ -39,15 +44,10 @@ class Enigma
     date_key = generate_date_key(date) || generate_date_key#(day)
     loop do
       encrypted_array = breaks_five_digit_string_to_array_of_four(encryption_key)
-       #binding.pry
       rotation_key = combine(zip_two_arrays(encrypted_array, date_key))
-
       decrypted_attempt = decrypt(message, rotation_key)
       decrypted_attempt
       if decrypted_attempt.slice(-7, 7) == "..end.."
-       # decrypted_attempt
-        # puts "Getting there"
-        # binding.pry
         return decrypted_attempt
         break
       elsif encryption_key.to_i > 100000
@@ -56,7 +56,6 @@ class Enigma
       encryption_key_new = encryption_key.to_i + 1
       encryption_key = conv_num_to_five_dig(encryption_key_new)
       decrypted_attempt
-      #binding.pry
     end
   end
 
